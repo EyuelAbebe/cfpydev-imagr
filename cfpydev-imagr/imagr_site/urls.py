@@ -8,9 +8,6 @@ from imagr_images import views as imageViews
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'imagr_site.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
     url(r'^$', views.front, name='front'),
     url(r'^home$', include('imagr_user.urls')),
     url(r'^album/', include('imagr_images.urls')),
