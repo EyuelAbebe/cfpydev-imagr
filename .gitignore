@@ -60,3 +60,6 @@ db.sqlite3
 
 # image cache files
 uploaded_images/
+
+# credentials
+credentials.txt
