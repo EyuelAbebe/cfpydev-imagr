@@ -7,13 +7,10 @@ django-configuration==0.0.3
 django-configurations==0.8
 django-polymorphic==0.5.5
 ecdsa==0.11
-gnureadline==6.3.3
 gunicorn==19.0.0
-ipython==2.1.0
 paramiko==1.14.0
 psycopg2==2.5.3
 pycrypto==2.6.1
-python-memcached==1.53
 pytz==2014.4
 requirements==0.1
 sorl-thumbnail==11.12

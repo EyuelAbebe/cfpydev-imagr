@@ -105,7 +105,6 @@ def db_envs():
 
 
 def run_command_on_selected_server(command):
-
     select_instance()
     selected_hosts = ['ubuntu@' + env.active_instance.public_dns_name]
     execute(command, hosts=selected_hosts)
@@ -133,16 +132,18 @@ def run_deploy():
     local('ssh-add ~/.ssh/mykeypair.pem')
     install_nginx()
     sudo('apt-get update')
-    sudo('apt-get install supervisor')
-    sudo('apt-get install python-pip')
-    sudo('apt-get install python-dev')
+    sudo('apt-get install -y supervisor')
+    sudo('apt-get install -y python-pip')
+    sudo('apt-get install -y libpq-dev')
+    sudo('apt-get install -y python-dev')
+    sudo('apt-get install -y libjpeg62 libjpeg62-dev zlib1g-dev')
     rsync_project(local_dir='/Users/eyuelabebe/Desktop/projects/django-imagr/cfpydev-imagr', remote_dir='~/')
     sudo('pip install -r cfpydev-imagr/requirements.txt')
     upload_template('simple_nginx_config', '~/',  context={'host_dns': env.active_instance.public_dns_name})
     upload_template('supervisord.conf', '~/', context={'host_envs': db_envs()})
-    sudo('mv cfpydev-imagr/i_i__aws_deploy/supervisord.conf /etc/supervisor/conf.d/cfpydev-imagr.conf')
+    sudo('mv supervisord.conf /etc/supervisor/conf.d/cfpydev-imagr.conf')
     sudo('mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.orig')
-    sudo('mv cfpydev-imagr/i_i__aws_deploy/simple_nginx_config /etc/nginx/sites-available/default')
+    sudo('mv simple_nginx_config /etc/nginx/sites-available/default')
     sudo('/etc/init.d/nginx restart')
     sudo('/etc/init.d/supervisor stop')
     sudo('/etc/init.d/supervisor start')

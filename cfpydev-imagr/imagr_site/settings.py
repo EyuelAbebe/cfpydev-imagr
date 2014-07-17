@@ -177,7 +177,7 @@ class Prod(base_settings):
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'imagr',
-            'HOST': 'imagrdb.cq89u2nltc2z.us-west-2.rds.amazonaws.com',
+            'HOST': 'imagrdb.cj9whh42swi2.us-west-2.rds.amazonaws.com',
             'PORT': 5432,
             'PASSWORD': 'eyuel123',
             'USER': 'eyuel',
