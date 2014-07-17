@@ -59,4 +59,4 @@ db.sqlite3
 .imagr_images/uploaded_images/
 
 # image cache files
-*uploaded_images/cache*
+uploaded_images/
