@@ -6,6 +6,9 @@ from fabric.api import prompt, execute
 from fabric.api import sudo
 from fabric.contrib.project import rsync_project
 from fabric.contrib.files import upload_template
+import os
+
+cwd_ = os.getcwd()
 
 env.hosts = ['localhost', ]
 env.aws_region = 'us-west-2'
@@ -136,7 +139,7 @@ def run_deploy():
     sudo('apt-get install python-pip')
     sudo('apt-get install python-dev')
     rsync_project(local_dir='/Users/eyuelabebe/Desktop/projects/django-imagr/cfpydev-imagr', remote_dir='~/')
-    sudo('pip install -r cfpydev-imagr/i_i__aws_deploy/requirements.txt')
+    sudo('pip install -r requirements.txt')
     upload_template('simple_nginx_config', '~/',  context={'host_dns': env.active_instance.public_dns_name})
     upload_template('supervisord.conf', '~/', context={'host_envs': db_envs()})
     sudo('mv cfpydev-imagr/i_i__aws_deploy/supervisord.conf /etc/supervisor/conf.d/cfpydev-imagr.conf')
