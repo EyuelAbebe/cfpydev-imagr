@@ -20,12 +20,13 @@ class base_settings (Configuration):
     # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = '_0)ionh8p(-xw=uh-3_8un)^xo+=&obsad&lhohn-d93j(p!21'
+    SECRET_KEY = os.environ['SECRET_KEY']
 
     # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = True
+    # DEBUG = True
 
-    TEMPLATE_DEBUG = DEBUG
+    # TEMPLATE_DEBUG = DEBUG
+
 
     ALLOWED_HOSTS = []
 
@@ -57,18 +58,51 @@ class base_settings (Configuration):
 
     ROOT_URLCONF = 'imagr_site.urls'
 
+    ALLOWED_HOSTS = []
+
+    AUTH_USER_MODEL = 'imagr_user.ImagrUser'
+
+    # Application definition
+
+    INSTALLED_APPS = (
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+        'south',
+        'sorl.thumbnail',
+        'imagr_images',
+        'imagr_user',
+        'gunicorn',
+    )
+
+    MIDDLEWARE_CLASSES = (
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    )
+
+    ROOT_URLCONF = 'imagr_site.urls'
+
+
+
     WSGI_APPLICATION = 'imagr_site.wsgi.application'
 
 
     # Database
     # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'imagr',
-        }
-    }
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': 'imagr',
+    #     }
+    # }
 
     # Internationalization
     # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -107,9 +141,10 @@ class base_settings (Configuration):
     # THUMBNAIL_FORMAT = 'PNG'
     # THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.redis_kvstore.KVStore'
     THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.cached_db_kvstore.KVStore'
-    # THUMBNAIL_REDIS_HOST = 'localhost'  # default
-    # THUMBNAIL_REDIS_PORT = 6379  # default
-    THUMBNAIL_DEBUG = DEBUG
+
+    # THUMBNAIL_REDIS_HOST = 'localhost' # default
+    # THUMBNAIL_REDIS_PORT = 6379 # default
+    # THUMBNAIL_DEBUG = DEBUG
     THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.pil_engine.Engine'
     THUMBNAIL_CACHE = 'default'
     CACHES = {
@@ -125,5 +160,26 @@ class base_settings (Configuration):
 
 class Dev(base_settings):
     DEBUG = True
+    TEMPLATE_DEBUG = DEBUG
+    THUMBNAIL_DEBUG = DEBUG
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'imagr',
+        }
+    }
 
 
+class Prod(base_settings):
+    DEBUG = False
+    TEMPLATE_DEBUG = DEBUG
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'imagr',
+            'HOST': 'imagrdb.cq89u2nltc2z.us-west-2.rds.amazonaws.com',
+            'PORT': 5432,
+            'PASSWORD': 'eyuel123',
+            'USER': 'eyuel',
+        }
+    }

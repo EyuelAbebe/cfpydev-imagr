@@ -1,9 +1,12 @@
 from django.test import TestCase
 from imagr_user.models import ImagrUser
 from imagr_images.models import Photo, Album
-from django.test.client import Client
+from imagr_user.views import home
+from django.test.client import Client, RequestFactory
 from django.db import models
 from django.core.files import File
+from django.core.urlresolvers import reverse
+from django.http import Http404
 import os
 
 
@@ -105,6 +108,7 @@ class Home_test(TestCase):
         self.usr2 = ImagrUser.objects.create(first_name='Muazzez',
                                              last_name='Mira',
                                              username='Muazzez')
+        self.factory = RequestFactory()
         # create photos
         base_dir = os.getcwd() + '/imagr_images/static/front_img/'
         with open(base_dir + '7fTNh.jpg', 'r') as f:
@@ -129,17 +133,19 @@ class Home_test(TestCase):
                                       title="album1",
                                       description="a1_descr",
                                       privacy_option=2)
+        album1.photos = [photo1, photo2]
 
     def tearDown(self):
         self.usr1.delete()
         self.usr2.delete()
 
     def test_usr1_response(self):
-        c = Client()
-        response = c.get('/home/' + str(self.usr1.id) + '/')
+        request = self.factory.get(reverse('home'))
+        request.user = self.usr1
+        response = home(request)
         self.assertEqual(response.status_code, 200)
 
     def test_usr2_response(self):
-        c = Client()
-        response = c.get('/home/' + str(self.usr2.id) + '/')
-        self.assertEqual(response.status_code, 404)
+        request = self.factory.get(reverse('home'))
+        request.user = self.usr2
+        self.assertRaises(Http404, home, request)

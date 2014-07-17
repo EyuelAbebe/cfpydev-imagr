@@ -1,22 +1,40 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% block title %}Stream{% endblock %}
+
+{% if request.user.is_active %}
+    {% block navbar_detail %}
+
+        <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="{% url 'home'  %}">Home</a></li>
+                <!-- Disable About/Contact until destinations exist
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li> -->
+              </ul>
+        </div><!--/.nav-collapse -->
+
+    {% endblock %}
+{% endif %}
+
 {% block container %}
 <h1>{{ user.first_name }} {{ user.last_name }}!</h1>
+
+
 
 {% for photo in photo_list %}
 <!--     <li>{{ album.title }}</li> -->
 <!-- {% thumbnail album.cover_photo.url "64x64" crop="center" as im %}
   <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
 {% endthumbnail %} -->
-    <ul class="media-list">
+    <ul class="media-list col-lg-4">
       <li class="media">
             {% thumbnail photo.image "128x128" crop="center" as im %}
                 <img class="media-object" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
             {% endthumbnail %}
         <div class="media-body">
             <h4 class="media-heading">{{ photo.title }}</h4>
-            <p>{{ photo.description }}
+            <p>{{ photo.description }} </p>
         </div>
       </li>
     </ul>

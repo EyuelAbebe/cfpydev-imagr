@@ -25,7 +25,7 @@
     {% for album in album_list %}
       <div class="col-lg-4 col-sm-6 col-md-4">
         <div class="thumbnail">
-            <a href="/album/{{ album.id }}">
+            <a href="{% url 'albums' album.id %}">
                 {% thumbnail album.cover_photo.get.image "242x200" crop="center" as im %}
                     <img class="thumbnail img-responsive" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
                 {% endthumbnail %}
