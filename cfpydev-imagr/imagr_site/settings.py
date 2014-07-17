@@ -20,12 +20,12 @@ class base_settings (Configuration):
     # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = '_0)ionh8p(-xw=uh-3_8un)^xo+=&obsad&lhohn-d93j(p!21'
+    SECRET_KEY = os.environ['SECRET_KEY']
 
     # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = True
+    # DEBUG = True
 
-    TEMPLATE_DEBUG = DEBUG
+    # TEMPLATE_DEBUG = DEBUG
 
 
     ALLOWED_HOSTS = []
@@ -71,10 +71,11 @@ class base_settings (Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        #'south',
+        'south',
         'sorl.thumbnail',
         'imagr_images',
         'imagr_user',
+        'gunicorn',
     )
 
     MIDDLEWARE_CLASSES = (
@@ -96,12 +97,12 @@ class base_settings (Configuration):
     # Database
     # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'imagr',
-        }
-    }
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': 'imagr',
+    #     }
+    # }
 
     # Internationalization
     # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -143,7 +144,7 @@ class base_settings (Configuration):
 
     # THUMBNAIL_REDIS_HOST = 'localhost' # default
     # THUMBNAIL_REDIS_PORT = 6379 # default
-    THUMBNAIL_DEBUG = DEBUG
+    # THUMBNAIL_DEBUG = DEBUG
     THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.pil_engine.Engine'
     THUMBNAIL_CACHE = 'default'
     CACHES = {
@@ -159,3 +160,26 @@ class base_settings (Configuration):
 
 class Dev(base_settings):
     DEBUG = True
+    TEMPLATE_DEBUG = DEBUG
+    THUMBNAIL_DEBUG = DEBUG
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'imagr',
+        }
+    }
+
+
+class Prod(base_settings):
+    DEBUG = False
+    TEMPLATE_DEBUG = DEBUG
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'imagr',
+            'HOST': 'imagrdb.cq89u2nltc2z.us-west-2.rds.amazonaws.com',
+            'PORT': 5432,
+            'PASSWORD': 'eyuel123',
+            'USER': 'eyuel',
+        }
+    }
