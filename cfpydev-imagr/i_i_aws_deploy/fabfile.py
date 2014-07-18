@@ -127,6 +127,9 @@ def terminate_instance():
     select_instance(state='stopped')
     env.ec2.terminate_instances(instance_ids=[env.active_instance.id])
 
+def set_env_var():
+    pass
+
 
 def run_deploy():
     local('ssh-add ~/.ssh/mykeypair.pem')
@@ -144,6 +147,8 @@ def run_deploy():
     sudo('mv supervisord.conf /etc/supervisor/conf.d/cfpydev-imagr.conf')
     sudo('mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.orig')
     sudo('mv simple_nginx_config /etc/nginx/sites-available/default')
+    # sudo('export SECRET_KEY='_0)ionh8p(-xw=uh-3_8un)^xo+=&obsad&lhohn-d93j(p!21'')
+    # sudo('export DJANGO_CONFIGURATION='Prod'')
     sudo('/etc/init.d/nginx restart')
     sudo('/etc/init.d/supervisor stop')
     sudo('/etc/init.d/supervisor start')

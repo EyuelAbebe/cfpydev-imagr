@@ -123,12 +123,13 @@ class base_settings (Configuration):
     # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
     STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     MEDIA_ROOT = '../imagr_images/uploaded_images'
     MEDIA_URL = '/media/'
 
-    STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, "static"),
-    )
+    # STATICFILES_DIRS = (
+    #     os.path.join(BASE_DIR, "static"),
+    # )
 
     TEMPLATE_LOADERS = (
         ('django.template.loaders.cached.Loader', (
@@ -171,7 +172,10 @@ class Dev(base_settings):
 
 
 class Prod(base_settings):
-    DEBUG = False
+    ALLOWED_HOSTS = ['http://ec2-54-191-166-39.us-west-2.compute.amazonaws.com',
+                     'www.ec2-54-191-166-39.us-west-2.compute.amazonaws.com',
+                     'ec2-54-191-166-39.us-west-2.compute.amazonaws.com']
+    DEBUG = True
     TEMPLATE_DEBUG = DEBUG
     DATABASES = {
         'default': {
